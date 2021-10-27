@@ -22,12 +22,31 @@
 (setv window ((. pygame display set-mode) (, 800 600)))
 ((. pygame display set-caption) "Comrade Paint")
 
+(setv pink (, 245 66 218))
+(setv green (, 0 250 0))
+(setv red (, 250 0 0))
+(setv blue (, 0 0 250))
+
+(defn draw-circle [window colour position]
+  "Draw a circle, will most likely later include size argument"
+  (pygame.draw.circle window colour position 40))
+
+
 (setv running True)
 (while running
-    ;; Process events
-    (for [event ((. pygame event get))]
-        (when (= (. event type) (. pygame QUIT))
-            (setv running False)))
-
     ((. window fill) (, 255 255 255))
-    ((. pygame display flip)))
+  ;; Process events
+    (for [event ((. pygame event get))]
+        (cond [(= (. event type) (. pygame QUIT))
+               (setv running False)]
+              [(= (. event type) (. pygame MOUSEBUTTONDOWN))
+               (setv position (pygame.mouse.get_pos))
+               ; pink is a placeholder here
+               (draw-circle window pink position)]) 
+      ((. pygame display flip))))
+
+
+
+
+
+
