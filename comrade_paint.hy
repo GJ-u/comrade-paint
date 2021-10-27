@@ -31,10 +31,10 @@
   "Draw a circle, will most likely later include size argument"
   (pygame.draw.circle window colour position 40))
 
+((. window fill) (, 255 255 255))
 
 (setv running True)
 (while running
-    ((. window fill) (, 255 255 255))
   ;; Process events
     (for [event ((. pygame event get))]
         (cond [(= (. event type) (. pygame QUIT))
