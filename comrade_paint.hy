@@ -29,24 +29,18 @@
 
 (defn draw-circle [window colour position]
   "Draw a circle, will most likely later include size argument"
-  (pygame.draw.circle window colour position 40))
+  ((. pygame draw circle) window colour position 40))
 
 ((. window fill) (, 255 255 255))
 
 (setv running True)
 (while running
   ;; Process events
-    (for [event ((. pygame event get))]
-        (cond [(= (. event type) (. pygame QUIT))
-               (setv running False)]
-              [(= (. event type) (. pygame MOUSEBUTTONDOWN))
-               (setv position (pygame.mouse.get_pos))
-               ; pink is a placeholder here
-               (draw-circle window pink position)]) 
-      ((. pygame display flip))))
-
-
-
-
-
-
+  (for [event ((. pygame event get))]
+    (cond [(= (. event type) (. pygame QUIT))
+            (setv running False)]
+          [(= (. event type) (. pygame MOUSEBUTTONDOWN))
+            (setv position ((. pygame mouse get_pos)))
+            ;; Pink is a placeholder here
+            (draw-circle window pink position)])) 
+  ((. pygame display flip)))
