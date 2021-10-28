@@ -1,3 +1,3 @@
 # comrade-paint
 
-.i la .komraidpeint. cu cinta proga .i .au'o do nelci la .komraidpeint.
+.i la .komraid.peint. cinta proga .i .a'o do nelci la .komraid.peint.
