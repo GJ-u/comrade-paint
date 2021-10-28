@@ -22,10 +22,10 @@
 (setv window ((. pygame display set-mode) (, 800 600)))
 ((. pygame display set-caption) "Comrade Paint")
 
-(setv pink (, 245 66 218))
-(setv green (, 0 250 0))
-(setv red (, 250 0 0))
-(setv blue (, 0 0 250))
+(setv pink (, 245 66 218)
+      green (, 0 250 0)
+      red (, 250 0 0)
+      blue (, 0 0 250))
 
 (defn draw-circle [window colour position]
   "Draw a circle, will most likely later include size argument"
