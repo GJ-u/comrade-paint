@@ -19,19 +19,38 @@
 (import pygame)
 
 ((. pygame init))
-(setv window ((. pygame display set-mode) (, 800 600)))
+
+;; Window setup
+(setv window-width 800
+      window-height 600
+      window-surface ((. pygame display set-mode) (, window-width window-height)))
 ((. pygame display set-caption) "Comrade Paint")
+
+;; The drawing surface occupies the whole screen minus some pixels at the
+;; bottom that are used to show the colors
+(setv toolbar-size 40
+      drawing-surface
+        ((. pygame Surface) (, window-width (- window-height toolbar-size))))
+((. drawing-surface fill) (, 255 255 255))
 
 (setv pink (, 245 66 218)
       green (, 0 250 0)
       red (, 250 0 0)
-      blue (, 0 0 250))
+      blue (, 0 0 250)
+      colors [pink green red blue]
+      current-color pink)
 
-(defn draw-circle [window colour position]
-  "Draw a circle, will most likely later include size argument"
-  ((. pygame draw circle) window colour position 40))
-
-((. window fill) (, 255 255 255))
+(defn mouse-handler [event]
+  ;; :[ I will try to eliminate this somehow in the future
+  (global current-color)
+  (setv position ((. pygame mouse get-pos)))
+  ;; Check if the mouse click was inside the drawing area
+  (if (<= (get position 1) (- window-height toolbar-size))
+    ((. pygame draw circle) drawing-surface current-color position 40)
+    ;; If it wasn't, check if the mouse click was within the color squares
+    (when (<= (get position 0) (* (len colors) toolbar-size))
+      ;; Determine which color was selected with floor division
+      (setv current-color (get colors (// (get position 0) toolbar-size))))))
 
 (setv running True)
 (while running
@@ -40,7 +59,19 @@
     (cond [(= (. event type) (. pygame QUIT))
             (setv running False)]
           [(= (. event type) (. pygame MOUSEBUTTONDOWN))
-            (setv position ((. pygame mouse get_pos)))
-            ;; Pink is a placeholder here
-            (draw-circle window pink position)])) 
+            (mouse-handler event)]))
+
+  ;; Clear the window surface, this will become necessary at some point
+  ((. window-surface fill) (, 0 0 0))
+  ;; Draw color picker squares to bottom of the window surface
+  (for [(, index color) (enumerate colors)]
+    (setv rect (,
+                 (* index toolbar-size)
+                 (- window-height toolbar-size)
+                 toolbar-size
+                 toolbar-size))
+    ((. pygame draw rect) window-surface color rect))
+
+  ;; Display the drawing surface on top of the main window surface
+  ((. window-surface blit) drawing-surface (, 0 0))
   ((. pygame display flip)))
