@@ -42,15 +42,17 @@
       purple (, 161 66 255)
       brown (, 112 75 52)
       grey (, 150 150 150)
-      white (, 255 255 255)
-      colors [black brown grey white pink green red blue purple yellow]
+      white (, 255 255 255) 
+      orange (, 255 135 15)
+      pink (, 255 36 233)
+      colors [red orange yellow green blue purple pink black white brown grey]
       current-color black
 
       current-size 40)
 
 (defn mouse-handler [event]
   ;; :[ I will try to eliminate this somehow in the future
-  (global current-color)
+  (global current-color) 
   (setv position ((. pygame mouse get-pos)))
   ;; Check if the mouse click was inside the drawing area
   (if (<= (get position 1) (- window-height toolbar-size))
@@ -67,8 +69,15 @@
     (cond [(= (. event type) (. pygame QUIT))
             (setv running False)]
           [(= (. event type) (. pygame MOUSEBUTTONDOWN))
-            (mouse-handler event)]))
-
+           (mouse-handler event)]
+          [(= (. event type) (. pygame KEYDOWN))
+           (cond
+             [(= (. event key) (. pygame K_UP))
+              (setv current-size (+ current-size 20))]
+             [(= (. event key) (. pygame K_DOWN))
+              (setv current-size (- current-size 20))]
+             )])
+              
   ;; Clear the window surface, this will become necessary at some point
   ((. window-surface fill) (, 0 0 0))
   ;; Draw color picker squares to bottom of the window surface
@@ -82,4 +91,4 @@
 
   ;; Display the drawing surface on top of the main window surface
   ((. window-surface blit) drawing-surface (, 0 0))
-  ((. pygame display flip)))
+  ((. pygame display flip))))
