@@ -19,6 +19,10 @@
 (import pygame)
 
 ((. pygame init))
+;EVENTUALL TO DISPLAY THE SIZE OF THE BRUSH
+(setv font (pygame.font.SysFont "Ubuntu Mono 12" 30))
+
+(setv text-surface (font.render "hewwo?" False (, 0 0 0)))
 
 ;; Window setup
 (setv window-width 800
@@ -73,9 +77,9 @@
           [(= (. event type) (. pygame KEYDOWN))
            (cond
              [(= (. event key) (. pygame K_UP))
-              (setv current-size (+ current-size 20))]
+              (setv current-size (+ current-size 10))]
              [(= (. event key) (. pygame K_DOWN))
-              (setv current-size (- current-size 20))]
+              (setv current-size (- current-size 10))]
              )])
               
   ;; Clear the window surface, this will become necessary at some point
