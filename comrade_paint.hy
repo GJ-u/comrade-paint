@@ -37,8 +37,16 @@
       green (, 0 250 0)
       red (, 250 0 0)
       blue (, 0 0 250)
-      colors [pink green red blue]
-      current-color pink)
+      black (, 0 0 0)
+      yellow (, 249 255 66)
+      purple (, 161 66 255)
+      brown (, 112 75 52)
+      grey (, 150 150 150)
+      white (, 255 255 255)
+      colors [black brown grey white pink green red blue purple yellow]
+      current-color black
+
+      current-size 40)
 
 (defn mouse-handler [event]
   ;; :[ I will try to eliminate this somehow in the future
@@ -46,7 +54,7 @@
   (setv position ((. pygame mouse get-pos)))
   ;; Check if the mouse click was inside the drawing area
   (if (<= (get position 1) (- window-height toolbar-size))
-    ((. pygame draw circle) drawing-surface current-color position 40)
+    ((. pygame draw circle) drawing-surface current-color position current-size)
     ;; If it wasn't, check if the mouse click was within the color squares
     (when (<= (get position 0) (* (len colors) toolbar-size))
       ;; Determine which color was selected with floor division
