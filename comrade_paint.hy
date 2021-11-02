@@ -19,10 +19,6 @@
 (import pygame)
 
 ((. pygame init))
-;EVENTUALL TO DISPLAY THE SIZE OF THE BRUSH
-(setv font (pygame.font.SysFont "Ubuntu Mono 12" 30))
-
-(setv text-surface (font.render "hewwo?" False (, 0 0 0)))
 
 ;; Window setup
 (setv window-width 800
@@ -54,6 +50,14 @@
 
       current-size 40)
 
+(defn new-text-surface [font text]
+  ((. font render) text False white))
+
+(setv font-size 30 
+      font ((. pygame font SysFont) "ubuntumono" font-size)
+      text-surface (new-text-surface font (str current-size))
+      text-margin (* 0.5 (- toolbar-size font-size)))
+
 (defn mouse-handler [event]
   ;; :[ I will try to eliminate this somehow in the future
   (global current-color) 
@@ -73,14 +77,15 @@
     (cond [(= (. event type) (. pygame QUIT))
             (setv running False)]
           [(= (. event type) (. pygame MOUSEBUTTONDOWN))
-           (mouse-handler event)]
+            (mouse-handler event)]
           [(= (. event type) (. pygame KEYDOWN))
-           (cond
-             [(= (. event key) (. pygame K_UP))
-              (setv current-size (+ current-size 10))]
-             [(= (. event key) (. pygame K_DOWN))
-              (setv current-size (- current-size 10))]
-             )])
+            (cond
+              [(= (. event key) (. pygame K_UP))
+                (setv current-size (+ current-size 10)
+                      text-surface (new-text-surface font (str current-size)))]
+              [(= (. event key) (. pygame K_DOWN))
+                (setv current-size (- current-size 10)
+                      text-surface (new-text-surface font (str current-size)))])]))
               
   ;; Clear the window surface, this will become necessary at some point
   ((. window-surface fill) (, 0 0 0))
@@ -95,4 +100,8 @@
 
   ;; Display the drawing surface on top of the main window surface
   ((. window-surface blit) drawing-surface (, 0 0))
-  ((. pygame display flip))))
+
+  (setv text-position (, (- window-width ((. text-surface get-width)) text-margin)
+                         (- window-height ((. text-surface get-height)) text-margin)))
+  ((. window-surface blit) text-surface text-position)
+  ((. pygame display flip)))
