@@ -24,7 +24,7 @@
 (setv window-width 800
       window-height 600
       window-surface ((. pygame display set-mode) (, window-width window-height)))
-((. pygame display set-caption) "Comrade Paint")
+((. pygame display set-caption) "la .komraid.peint.")
 
 ;; The drawing surface occupies the whole screen minus some pixels at the
 ;; bottom that are used to show the colors
