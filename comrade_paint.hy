@@ -84,7 +84,7 @@
                 (setv current-size (+ current-size 10)
                       text-surface (new-text-surface font (str current-size)))]
               [(= (. event key) (. pygame K_DOWN))
-                (setv current-size (- current-size 10)
+                (setv current-size (max (- current-size 10) 0)
                       text-surface (new-text-surface font (str current-size)))])]))
               
   ;; Clear the window surface, this will become necessary at some point
